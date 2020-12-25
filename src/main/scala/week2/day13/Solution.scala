@@ -23,12 +23,10 @@ object Solution {
   }
 
   private def solvePartTwo(inputData: List[String]): Long = {
-    val a = inputData.last.split(",").zipWithIndex.filter(_._1 != "x").toList.map { case (busNo, offset) =>
+    crt(inputData.last.split(",").zipWithIndex.filter(_._1 != "x").toList.map { case (busNo, offset) =>
       val bus = busNo.toLong
       (bus, (bus - offset) % bus)
-    }
-    println("")
-    crt(a)
+    })
   }
 
   case class BusDepartureDelta(busId: Int, delta: Int)

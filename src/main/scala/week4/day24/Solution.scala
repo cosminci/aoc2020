@@ -29,12 +29,11 @@ object Solution {
   }
 
   private def solvePartOne(directionsToTiles: List[List[String]]): Int = {
-    val finalTiles = getTileFlipCounts(directionsToTiles)
-    finalTiles.count(_._2)
+    getTileColors(directionsToTiles).count(_._2)
   }
 
   private def solvePartTwo(directionsToTiles: List[List[String]]): Int = {
-    val initialTiles = getTileFlipCounts(directionsToTiles)
+    val initialTiles = getTileColors(directionsToTiles)
     (1 to 100)
       .foldLeft(initialTiles) { case (tiles, _) =>
         val blackTiles = tiles.filter(_._2)
@@ -56,7 +55,7 @@ object Solution {
       .count(_._2)
   }
 
-  private def getTileFlipCounts(directionsToTiles: List[List[String]]) = {
+  private def getTileColors(directionsToTiles: List[List[String]]) = {
     directionsToTiles
       .map { directionsToTile =>
         directionsToTile.foldLeft((0, 0)) {

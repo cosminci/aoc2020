@@ -102,7 +102,7 @@ object Solution {
 
   sealed trait Point
 
-  case class Point3D(x: Int, y: Int, z: Int)         extends Point
+  case class Point3D(x: Int, y: Int, z: Int) extends Point
 
   case class Point4D(x: Int, y: Int, z: Int, w: Int) extends Point
 

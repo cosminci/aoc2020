@@ -4,10 +4,10 @@ object Solution {
 
   def main(args: Array[String]): Unit = {
     val ingredientsWithAllergens = utils.loadInputAsListOfStrings("week3/day21/input.txt").map { line =>
-      val (ingr: String) :: (allerg: String) :: Nil = line.split("\\(contains").toList
+      val ingredient :: allergen :: Nil = line.split("\\(contains").toList
       (
-        ingr.trim().split(" ").toSet,
-        allerg
+        ingredient.trim().split(" ").toSet,
+        allergen
           .replace(")", "")
           .replace(",", "")
           .trim()

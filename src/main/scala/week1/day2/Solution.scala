@@ -3,18 +3,16 @@ package week1.day2
 object Solution {
 
   def main(args: Array[String]): Unit = {
-    val inputData = utils.loadInputAsListOfStrings("week1/day2/input_ex.txt").map(parseInput)
+    val inputData = utils.loadInputAsListOfStrings("week1/day2/input_ex.txt").map { str =>
+      str.split(" ").toList match {
+        case range :: charStr :: pw :: Nil =>
+          val r = range.split("-").map(_.toInt)
+          Input(r(0), r(1), charStr.charAt(0), pw)
+      }
+    }
 
     utils.timeSolution("Part 1", () => solvePartOne(inputData))
     utils.timeSolution("Part 2", () => solvePartTwo(inputData))
-  }
-
-  private def parseInput(str: String) = {
-    str.split(" ").toList match {
-      case range :: charStr :: pw :: Nil =>
-        val r = range.split("-").map(_.toInt)
-        Input(r(0), r(1), charStr.charAt(0), pw)
-    }
   }
 
   private def solvePartOne(inputData: List[Input]): Int = {

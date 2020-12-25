@@ -68,10 +68,10 @@ object Solution {
 
   case class Acc(complete: List[String], inProgress: String)
 
-  case class Simple(regex: Regex)                         extends Rule
+  case class Simple(regex: Regex) extends Rule
 
   case class WithBounds(regex: Regex, min: Int, max: Int) extends Rule
 
-  case class Either(rule1: Rule, rule2: Rule)             extends Rule
+  case class Either(rule1: Rule, rule2: Rule) extends Rule
 
 }

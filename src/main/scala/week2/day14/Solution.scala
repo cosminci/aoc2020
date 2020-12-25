@@ -47,14 +47,13 @@ object Solution {
   private def bitArrayToLong(arr: Array[Char]): Long = BigInt(arr.mkString(""), 2).toLong
 
   private def applyMask(bitsToChange: Map[Int, Char], value: Long) = {
-    val binaryRepr = bitsToChange
+    bitsToChange
       .foldLeft(value.toBinaryString.toCharArray.reverse) { case (acc, (idx, char)) =>
         val bitArray = acc.padTo(math.max(acc.length, idx + 1), '0')
         bitArray(idx) = char
         bitArray
       }
       .reverse
-    binaryRepr
   }
 
   private def solvePartTwo(inputData: List[String]): Long = {
@@ -103,6 +102,6 @@ object Solution {
 
   case class Store(location: Int, value: Long) extends Command
 
-  case class Mask(bits: Map[Int, Char])        extends Command
+  case class Mask(bits: Map[Int, Char]) extends Command
 
 }

@@ -10,7 +10,7 @@ object Solution {
   private val opPattern = "([a-z]+) ([+|-])([0-9]+)".r
 
   @tailrec
-  def execute(acc: Int, opToExecute: Int, executedOps: Set[Int], indexedOps: Array[Op]): (Int, Set[Int], Int) = {
+  def execute(acc: Int, opToExecute: Int, executedOps: Set[Int], indexedOps: Vector[Op]): (Int, Set[Int], Int) = {
     if (executedOps.contains(opToExecute) || !indexedOps.isDefinedAt(opToExecute))
       (acc, executedOps, opToExecute)
     else {
@@ -28,26 +28,25 @@ object Solution {
     }
   }
 
-  def solvePartTwo(ops: List[Op]): Option[Int] = {
-    val opsArray            = ops.toArray
-    val (_, executedOps, _) = execute(acc = 0, opToExecute = 0, executedOps = Set.empty, ops.toArray)
+  def solvePartTwo(ops: Vector[Op]): Option[Int] = {
+    val (_, executedOps, _) = execute(acc = 0, opToExecute = 0, executedOps = Set.empty, ops)
     val candidateOps = executedOps.collect {
-      case opIdx if List(OpType.nop, OpType.jmp).contains(opsArray(opIdx).kind) =>
-        val Op(kind, sign, value) = opsArray(opIdx)
+      case opIdx if List(OpType.nop, OpType.jmp).contains(ops(opIdx).kind) =>
+        val Op(kind, sign, value) = ops(opIdx)
         val newKind               = if (kind == OpType.nop) OpType.jmp else OpType.nop
         (opIdx, Op(newKind, sign, value))
     }
     candidateOps.collectFirst {
-      case op if replaceAndExecute(opsArray, op)._3 == opsArray.length =>
-        replaceAndExecute(opsArray, op)._1
+      case op if replaceAndExecute(ops, op)._3 == ops.length =>
+        replaceAndExecute(ops, op)._1
     }
   }
 
-  def solvePartOne(ops: List[Op]): Int =
-    execute(acc = 0, opToExecute = 0, executedOps = Set.empty, ops.toArray)._1
+  def solvePartOne(ops: Vector[Op]): Int =
+    execute(acc = 0, opToExecute = 0, executedOps = Set.empty, ops)._1
 
   def main(args: Array[String]): Unit = {
-    val inputData = utils.loadInputAsListOfStrings("week2/day8/input.txt").map(parseInput)
+    val inputData = utils.loadInputAsListOfStrings("week2/day8/input.txt").map(parseInput).toVector
     utils.timeSolution("Part 1", () => solvePartOne(inputData))
     utils.timeSolution("Part 2", () => solvePartTwo(inputData))
   }
@@ -59,15 +58,12 @@ object Solution {
         Op(OpType.withName(opType), sign, argValue.toInt)
     }
 
-  private def replaceAndExecute(opsArray: Array[Op], op: (Int, Op)) = {
+  private def replaceAndExecute(ops: Vector[Op], op: (Int, Op)) = {
     execute(
       acc = 0,
       opToExecute = 0,
-      executedOps = Set.empty, {
-        val newOps = opsArray.clone()
-        newOps.update(op._1, op._2)
-        newOps
-      }
+      executedOps = Set.empty,
+      ops.updated(op._1, op._2)
     )
   }
 
